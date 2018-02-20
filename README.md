@@ -1,24 +1,22 @@
 # Python Webserver
 ### Python
 
-Develop a web server in a programming language of your choice (Python 
-suggested) that 
-does the following:
-A. Recreates the following HTTP 1.1 methodsbased on RFC 2616: GET, POST, PUT, DELETE, and CONNECT
-B. Returns the following response codes, when appropriate: 200, 400, 401, 403, 404, 411, 500, 505.
-C. Executes server-side scripts.
-  a.The server-side scripting languages supported by the webserver should be arbitrary; one should be able to integrate any scripting language (PHP, NodeJS, Python, Bash, Perl, Lisp, etc.) with the webserver with minimal 
-  effort. 
-  b.You may want to research CGI.
-D. Logs good requests and bad requests in different log files, as Apache does.
-E. Uses a configuration file for the following server settings:
-  a. Specify the IP address that the server is listening on
-  b. Port that the server is listening on
-  c. Permit disabling any of the above HTTP methods
-  d. Root folder for the web application on the host
-  e. Location where requests are logged
-  f. Location where bad requests are logged
-F.Uses one or more configuration files for specifying what server-side scripting languages are supported and/or how to execute th
+_Develop a web server in a programming language of your choice (Python suggested) that does the following_:   
+
+A. Recreates the following HTTP 1.1 methodsbased on RFC 2616: GET, POST, PUT, DELETE, and CONNECT   
+B. Returns the following response codes, when appropriate: 200, 400, 401, 403, 404, 411, 500, 505.   
+C. Executes server-side scripts.   
+  a.The server-side scripting languages supported by the webserver should be arbitrary; one should be able to integrate any scripting language (PHP, NodeJS, Python, Bash, Perl, Lisp, etc.) with the webserver with minimal effort.    
+  b.You may want to research CGI.   
+D. Logs good requests and bad requests in different log files, as Apache does.   
+E. Uses a configuration file for the following server settings:   
+  a. Specify the IP address that the server is listening on   
+  b. Port that the server is listening on   
+  c. Permit disabling any of the above HTTP methods   
+  d. Root folder for the web application on the host   
+  e. Location where requests are logged   
+  f. Location where bad requests are logged   
+F.Uses one or more configuration files for specifying what server-side scripting languages are supported and/or how to execute th   
 
 ### PHP
 + Build a web application in PHP that can be run on your webserver. The web application must:   
