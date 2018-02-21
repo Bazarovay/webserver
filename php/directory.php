@@ -26,9 +26,10 @@ printf("<table border=1>\n");
 printf("<tr><td>Name</td><td colspan=2>Email</td><td colspan=2>General Information</td></tr>\n");
 
 $con = mysql_connect("localhost","root","changeme") or die("cannot connect");
-$db_select = mysql_select_db('Company',$con);
+$db_select = mysql_select_db('webserver',$con);
 $result = mysql_query($con, "Select * from Employees");
 while ($row=mysql_fetch_assoc($result)){
+
 echo "<tr>";
 echo "Testing";
 echo "<td>".$row['Name']."</td>";

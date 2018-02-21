@@ -2,9 +2,6 @@
 <body>
 <head>
 <style type="text/css">
-body {
-background-image: url('<?php echo $backpic;?>');
-}
 </style>
 
 <form name="form1" method="post" action="index.php">
@@ -13,9 +10,9 @@ background-image: url('<?php echo $backpic;?>');
 </tr>
 </form>
 
-<form name="form1" method="post" action="checklogin.php">
+<form name="form1" method="post" action="signup.php">
 <tr class="tableheader">
-<td align="center" colspan="2"><font size="5" color="black">Enter Login Info:</td></font>
+<td align="center" colspan="2"><font size="5" color="black">Enter information below to sign up!</td></font>
 <br>
 </tr>
 <tr class="tablerow">
@@ -30,11 +27,6 @@ background-image: url('<?php echo $backpic;?>');
 </tr>
 <tr class="tableheader">
 <td align="center" colspan="2"><input type="submit" name="submit" value="Submit"></td>
-</tr>
-</form>
-<form name="form1" method="post" action="signup.html">
-<tr class="tableheader">
-<td align="center" colspan="2"><input type="submit" name="signup" value="Sign up"></td>
 </tr>
 </form>
 </body>
