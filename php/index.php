@@ -27,10 +27,12 @@ h1{
     border: none;
     color: white;
     padding: 15px 32px;
+    font-size: 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    margin-left: 10%;
+    margin-top: 10px;
 }
 .button:hover {
     background-color: red;
@@ -52,32 +54,12 @@ h1{
 
 <button id="home" class="button" name="Home" value="Home"> |^| Home </button>
 
+<button id="login" class="button" name="Login" value="Login">Login</button>
 
-<form name="form4" method="post" action="login.php">
-</tr>
-<tr class="tableheader">
-<td align="center" colspan="2">
-  <input class="button"  type="submit" name="Login" value="Login"></td>
-</tr>
-</form>
+<button id="directory" class="button" name="Login" value="Directory">Directory</button>
 
+<button id="lookup" class="button" name="lookup" value="lookup">Lookup</button>
 
-<form name="form5" method="post" action="directory.php">
-</tr>
-<tr class="tableheader">
-<td align="center" colspan="2">
-  <input class="button" type="submit" name="Directory" value="Directory"></td>
-</tr>
-</form>
-
-
-<form name="form6" method="post" action="lookup.php">
-</tr>
-<tr class="tableheader">
-<td align="center" colspan="2">
-  <input class="button" type="submit" name="lookup" value="Lookup ID"></td>
-</tr>
-</form>
 
 
 <script>
@@ -87,6 +69,30 @@ console.log(btn);
 if(btn){
   btn.addEventListener('click', function() {
     document.location.href = 'index.php';
+  });
+}
+
+var btn = document.getElementById('login');
+console.log(btn);
+if(btn){
+  btn.addEventListener('click', function() {
+    document.location.href = 'login.php';
+  });
+}
+
+var btn = document.getElementById('directory');
+console.log(btn);
+if(btn){
+  btn.addEventListener('click', function() {
+    document.location.href = 'directory.php';
+  });
+}
+
+var btn = document.getElementById('lookup');
+console.log(btn);
+if(btn){
+  btn.addEventListener('click', function() {
+    document.location.href = 'lookup.php';
   });
 }
 </script>
