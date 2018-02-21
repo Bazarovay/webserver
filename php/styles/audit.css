@@ -1,0 +1,30 @@
+
+body {
+    background-color: lightblue;
+}
+
+#header {
+    background: #ff7f7f;
+    height: 20%;
+}
+h1{
+    background: orange;
+    margin-top:10px;
+    margin-left: 35%;
+    margin-right: 30%;
+}
+
+.button {
+    background-color: orange;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+.button:hover {
+    background-color: red;
+    color: white;
+}

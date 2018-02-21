@@ -7,11 +7,9 @@ background-image: url('<?php echo $backpic;?>');
 }
 </style>
 
-<form name="form1" method="post" action="index.php">
-<tr class="tableheader">
-<td align="center" colspan="2"><input type="submit" name="Home" value="Home"></td>
-</tr>
-</form>
+<link rel="stylesheet" href="styles/audit.css">
+
+<button id="home" class="button" name="Home" value="Home"> |^| Home </button>
 
 <form name="form1" method="post" action="checklogin.php">
 <tr class="tableheader">
@@ -37,5 +35,8 @@ background-image: url('<?php echo $backpic;?>');
 <td align="center" colspan="2"><input type="submit" name="signup" value="Sign up"></td>
 </tr>
 </form>
+
+<script src="js/scripts.js"></script>
+
 </body>
 </html>
