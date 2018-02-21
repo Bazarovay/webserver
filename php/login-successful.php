@@ -8,7 +8,7 @@ if(!isset($_SESSION['username'])){
 
 <html>
 <body>
-<h2>Company Image Gallery</h2>
-<a href="logout.php">Logout</a>
+	<h2>Company Image Gallery</h2>
+	<a href="logout.php">Logout</a>
 </body>
 </html>
