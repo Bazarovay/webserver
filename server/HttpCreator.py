@@ -1,4 +1,4 @@
-class Response():
+class HttpCreator():
     """
     Reads header and parses it
     GET /a/c/getNameparam0:pradeep HTTP/1.1\r\nHost: localhost:8080\r\nUser-Agent: curl/7.55.1\r\nAccept: application/json\r\n\r\n
@@ -93,7 +93,7 @@ def handle_client(connection , recvd_req , config):
 
 if __name__ == "__main__":
     req = "GET /a/c/getNameparam0?pradeep=1 HTTP/1.1\r\nHost: localhost:8080\r\nUser-Agent: curl/7.55.1\r\nAccept: application/json\r\n\r\n"
-    res = Response(method="GET",uri="www.facebook.com");
+    res = HttpCreator(method="GET",uri="www.facebook.com");
     sending = res.send()
     print(sending)
     print(repr(sending))
