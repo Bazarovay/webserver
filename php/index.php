@@ -30,6 +30,15 @@
 <td align="center" colspan="2"><input type="submit" name="Directory" value="Directory"></td>
 </tr>
 </form>
+
+
+<form name="form6" method="post" action="lookup.php">
+</tr>
+<tr class="tableheader">
+<td align="center" colspan="2"><input type="submit" name="lookup" value="Lookup ID"></td>
+</tr>
+</form>
+
 </body>
 </html>
 
