@@ -3,20 +3,20 @@
 
 _Develop a web server in a programming language of your choice (Python suggested) that does the following_:   
 
-[] Recreates the following HTTP 1.1 methods based on RFC 2616: GET, POST, PUT, DELETE, and CONNECT   
+[-] Recreates the following HTTP 1.1 methods based on RFC 2616: GET, POST, PUT, DELETE, and CONNECT   
 [-] Returns the following response codes, when appropriate: 200, 400, 401, 403, 404, 411, 500, 505.   
-[] Executes server-side scripts.   
+[-] Executes server-side scripts.   
   []The server-side scripting languages supported by the webserver should be arbitrary; one should be able to integrate any scripting language (PHP, NodeJS, Python, Bash, Perl, Lisp, etc.) with the webserver with minimal effort.    
-  []You may want to research CGI.   
+  [x]You may want to research CGI.   
 [] Logs good requests and bad requests in different log files, as Apache does.   
 [-] Uses a configuration file for the following server settings:   
   [x] Specify the IP address that the server is listening on   
   [x] Port that the server is listening on   
-  [] Permit disabling any of the above HTTP methods   
+  [x] Permit disabling any of the above HTTP methods   
   [] Root folder for the web application on the host   
   [] Location where requests are logged   
   [] Location where bad requests are logged   
-[] Uses one or more configuration files for specifying what server-side scripting languages are supported and/or how to execute th   
+[] Uses one or more configuration files for specifying what server-side scripting languages are supported and/or how to execute them  
 
 ### PHP
 + Build a web application in PHP that can be run on your webserver. The web application must:   

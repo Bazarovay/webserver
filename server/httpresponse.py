@@ -8,7 +8,7 @@ class HttpResponse():
 
     # 200, 400, 401, 403, 404, 411, 500, 505
     code_and_reason = {200:"OK", 400:"Bad Request", 401:"Unauthorized",
-     403:"Forbidden", 404:"Not Found", 411:"Length Required",
+     403:"Forbidden", 404:"Not Found", 405: "Method Not Allowed", 411:"Length Required",
       500:"Internal Server Error", 505:"HTTP Version not supported"}
 
     def __init__(self,status=200,headers=None,reason=None,body=""):
@@ -87,25 +87,28 @@ def ok(code=200,headers=None):
     return HttpResponse(status=code,headers=headers)
 
 def unauthorized(code=400,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 def bad_request(code=401,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 def forbidden(code=403,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 def notfound(code=404,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
+
+def methodnotallowed(code=405,headers=None):
+    return HttpResponse(status=code,headers=headers)
 
 def lenreqd(code=411,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 def internal_server_error(code=500,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 def version_not_supported(code=505,headers=None):
-    return HttpResponse(status=code,headers=headers).send()
+    return HttpResponse(status=code,headers=headers)
 
 
 
