@@ -4,31 +4,35 @@ class HttpParser():
     GET /a/c/getNameparam0:pradeep HTTP/1.1\r\nHost: localhost:8080\r\nUser-Agent: curl/7.55.1\r\nAccept: application/json\r\n\r\n
     """
 
-    __slots__ = ['request_line_array', 'request_line', 'headers','body']
+    __slots__ = ['request_line_array', 'request_line', 'headers','body','method']
 
     def __init__(self, conn, req, conf):
         """
         Request from client
         Method SP Request-URI SP HTTP-Version CRLF
         """
-        CRLF = '\r\n'
+        CRLF = "\r\n"
+        req = req.decode()
         req_array = req.split(CRLF*2)
         req = req_array[0]
         self.body = req_array[1]
         self.request_line_array = req.split('\n')
         self.request_line = self.request_line_array[0]
         self.set_headers()
-
+        self.set_method()
 
     def get_version(self):
         return self.request_line.split(' ')[-1]
 
-    def get_method(self):
+    def set_method(self):
         try:
-            method = self.request_line.split()[0]
+            self.method = self.request_line.split()[0]
         except:
-            method = None
-        return method
+            self.method = None
+        return self.method
+
+    def get_method(self):
+        return self.method
 
     def get_uri(self):
         try:
@@ -70,15 +74,19 @@ class HttpParser():
     def get_body(self):
         return self.body
 
+    def __str__(self):
+        return ('headers : %s | request_line : %s   | body : %s  | method : %s'%(str(self.headers), str(self.request_line), str(self.body), str(self.method)))
+
 
 def handle_client(connection , recvd_req , config):
     Request(connection , recvd_req , config)
 
 if __name__ == "__main__":
-    req = "GET /a/c/getNameparam0?pradeep=1 HTTP/1.1\r\nHost: localhost:8080\r\nUser-Agent: curl/7.55.1\r\nAccept: application/json\r\n\r\n"
+    req = b'GET /a/c/getNameparam0:pradeep HTTP/1.1\r\nHost: localhost:8080\r\nUser-Agent: curl/7.55.1\r\nAccept: application/json\r\n\r\n'
     me_req = HttpParser(None, req, None)
-    print(me_req.get_host());
-    print(me_req.get_params());
-    print(me_req.get_uri());
-    print(me_req.get_method());
-    print(me_req.get_version());
+    print(me_req)
+    # print(me_req.get_host());
+    # print(me_req.get_params());
+    # print(me_req.get_uri());
+    # print(me_req.get_method());
+    # print(me_req.get_version());

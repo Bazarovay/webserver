@@ -8,8 +8,8 @@ are received here and forwarded to handlers
 import socket
 import configparser
 import sys
-from request import *
 import threading
+from handler import *
 
 def read_config():
     """
@@ -35,10 +35,12 @@ def create_socket(config):
     returns: socket (Socket)
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # ERRNO 98
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     bind_ip = config.get('SERVER' , 'IP')
     bind_port = int(config.get('SERVER', 'PORT'))
     sock.bind((bind_ip, bind_port))
-    sock.listen(5)
+    sock.listen(1)
 
     print("[*] Listening on %s:%s | 5 connections" % (bind_ip,bind_port))
     return sock
