@@ -28,14 +28,21 @@ def handle_client(connection , recvd_req , config):
                 file_name="/index.php"
 
             # print()
-            read_php = open("../php/index.php" , "r")
-            page = subprocess.check_output("php-cgi -q " +  "../php/index.php",shell=True)
-            res = httpresponse.ok()
-            print("------------------------------")
-            print(page)
-            print("------------------------------")
-            res.set_body(page.decode())
-            print(res.send())
+                read_php = open("../php/index.php" , "r")
+                page = subprocess.check_output("php-cgi -q " +  "../php/index.php",shell=True)
+                res = httpresponse.ok()
+                res.set_body(page.decode())
+
+            if resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js":
+                print(resource)
+                mfile = open("../php"+resource)
+                csstext=''
+                for fileline in mfile:
+                    csstext+=fileline
+
+                res = httpresponse.ok()
+                res.set_body(csstext)
+
             connection.send(res.send().encode())  # send data to socket
             connection.close()
 	    # try:    #if it is, open it and send it to client
