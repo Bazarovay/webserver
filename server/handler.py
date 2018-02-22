@@ -30,8 +30,8 @@ def serve_script(resource):
         try:
             path = "../php"+file_name
             if os.path.isfile(path):
-                read_php = open(path , "r")
-                page = subprocess.check_output("php-cgi -q " +  path,shell=True)
+                print(path)
+                page = subprocess.check_output("sudo php-cgi -q " +  path,shell=True)
                 res = httpresponse.ok()
                 res.set_body(page.decode())
             else:
@@ -65,8 +65,38 @@ def handle_client(connection , recvd_req , config):
         elif req_method == "POST":
             resource = http_obj.get_uri()
             print("[*] POST REQUEST : ",resource)
+            print("******************")
+            print(http_obj.get_body())
+            # php -B "\$_POST = array('username' => 'val1', 'password' => 'val2');" -F checklogin.php
+            # php -B "\$_POST = array('username' => 'val1', 'password' => 'val2');" -F checklogin.php
+
             if resource == "/" or resource.split(".")[-1] == "php":
-                res = serve_script(resource)
+                # try:
+
+                command = "export GATEWAY_INTERFACE=CGI/1.1"
+                command += " export REQUEST_METHOD=POST"
+                command += " export SCRIPT_FILENAME=/var/www/html/webserver/php/checklogin.php"
+                command += " export CONTENT_LENGTH=12"
+                # command += "export REDIRECT_STATUS=true; "
+                command += " export BODY=\"username=bob\""
+                # command += "export CONTENT_TYPE=application/x-www-form-urlencoded; "
+                command += " | sudo php-cgi -q -f"
+                res = subprocess.check_output(command,shell=True)
+                print("----------------------")
+                print(res)
+                print("-----------------------")
+                    # path = "../php"+resource
+                    # read_php = open(path , "r")
+                    # command = "\"\$_POST = array('username' => 'val1', 'password' => 'val2');\""
+                    # res = subprocess.check_output("php -B " + command + " -F ../php/checklogin.php",shell=True)
+                # except subprocess.CalledProcessError as e:
+                    # raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+                    # res = httpresponse.ok()
+                    # res.set_body(page.decode())
+                # except Exception as e:
+                    # print(e)
+
+                # res = serve_script(resource)
             elif resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js" or resource.split(".")[-1] == "html":
                 res = serve_static(resource)
             else:

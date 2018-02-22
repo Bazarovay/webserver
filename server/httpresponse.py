@@ -60,6 +60,9 @@ class HttpResponse():
         self.body = body
         return self.body
 
+    def get_body(self):
+        return self.body
+
     def send(self):
         """
         Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF

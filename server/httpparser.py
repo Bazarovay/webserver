@@ -15,7 +15,11 @@ class HttpParser():
         req = req.decode()
         req_array = req.split(CRLF*2)
         req = req_array[0]
-        self.body = req_array[1]
+        if len(req_array) > 1:
+            self.body = req_array[1]
+        else:
+            self.body = ""
+            
         self.request_line_array = req.split('\n')
         self.request_line = self.request_line_array[0]
         self.set_headers()
