@@ -20,20 +20,27 @@ class Handler():
 
 def handle_client(connection , recvd_req , config):
         http_obj = HttpParser(connection , recvd_req , config)
-        # print(http_obj)
+        print(http_obj)
 
         if http_obj.get_method() == "GET":
             resource = http_obj.get_uri()
-            if resource == "/":
-                file_name="/index.php"
+            print("-------------------------")
+            print(resource)
+            print("-------------------------")
+            if resource == "/" or resource.split(".")[-1] == "php":
+                print(resource)
+                file_name = resource
+                if resource == "/":
+                    file_name="/index.php"
 
-            # print()
-                read_php = open("../php/index.php" , "r")
-                page = subprocess.check_output("php-cgi -q " +  "../php/index.php",shell=True)
+                path = "../php"+file_name
+                print(path)
+                read_php = open(path , "r")
+                page = subprocess.check_output("php-cgi -q " +  path,shell=True)
                 res = httpresponse.ok()
                 res.set_body(page.decode())
 
-            if resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js":
+            if resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js" or resource.split(".")[-1] == "html":
                 print(resource)
                 mfile = open("../php"+resource)
                 csstext=''
