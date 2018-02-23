@@ -1,25 +1,25 @@
 <?php
-include $argv[1];
+// include $argv[1];
 // var_dump($_POST)
 $server = "localhost";
 $user = "root";
-$pass = "changeme";
+$pass = "root";
 $db = "webserver";
 $username = $_POST['username'];
 $password = $_POST['password'];
 echo "$username";
 echo "$password";
 
-mysql_connect("$server","$user","$pass") or die('cannot connect');
-mysql_select_db("$db")or die("cannot connect");
+$link = mysqli_connect("$server","$user","$pass","$db") or die('cannot connect');
+// mysqli_select_db("$db")or die("cannot connect");
 
 $sql = "select * from users where username='$username' and password='$password'";
-$result = mysql_query($sql);
-$check = mysql_num_rows($result);
-if ($check == 1){
-	session_start();
-	$_SESSION['username'] = $username;
-	header("Location: login-successful.php");
+$result = mysqli_query($link, $sql);
+
+if ($result == True) {
+  session_start();
+  $_SESSION['username'] = $username;
+  header("Location: login-successful.php");
 } else {
 	header("Location: login.php");
 }

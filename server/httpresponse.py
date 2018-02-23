@@ -7,7 +7,7 @@ class HttpResponse():
     __slots__ = ['version','status','reason_phrase','body','headers']
 
     # 200, 400, 401, 403, 404, 411, 500, 505
-    code_and_reason = {200:"OK", 400:"Bad Request", 401:"Unauthorized",
+    code_and_reason = {200:"OK", 400:"Bad Request", 401:"Unauthorized", 402:"Payment Required",
      403:"Forbidden", 404:"Not Found", 405: "Method Not Allowed", 411:"Length Required",
       500:"Internal Server Error", 505:"HTTP Version not supported"}
 
@@ -95,6 +95,9 @@ def unauthorized(code=400,headers=None):
 def bad_request(code=401,headers=None):
     return HttpResponse(status=code,headers=headers)
 
+def payment_required(code=402,headers=None):
+    return HttpResponse(status=code,headers=headers)
+
 def forbidden(code=403,headers=None):
     return HttpResponse(status=code,headers=headers)
 
@@ -103,6 +106,7 @@ def notfound(code=404,headers=None):
 
 def methodnotallowed(code=405,headers=None):
     return HttpResponse(status=code,headers=headers)
+
 
 def lenreqd(code=411,headers=None):
     return HttpResponse(status=code,headers=headers)

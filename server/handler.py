@@ -83,7 +83,20 @@ def handle_client(connection , recvd_req , config):
             print(resource)
 
             if resource == "/" or resource.split(".")[-1] == "php":
-                res = serve_script(http_obj, resource)
+                if resource == "/400.php":
+                    res = httpresponse.unauthorized()
+                elif resource == "/401.php":
+                    res = httpresponse.bad_request()
+                elif resource == "/402.php":
+                    res = httpresponse.payment_required()
+                elif resource == "/403.php":
+                    res = httpresponse.forbidden()
+                elif resource == "/411.php":
+                    res = httpresponse.lenreqd()
+                elif resource == "/505.php":
+                    res = httpresponse.version_not_supported()
+                else:
+                    res = serve_script(http_obj, resource)
             elif resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js" or resource.split(".")[-1] == "html":
                 res = serve_static(resource)
             else:
