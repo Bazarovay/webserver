@@ -22,22 +22,30 @@ def serve_static(resource):
         return res
 
 
-def serve_script(resource):
+def serve_script(req, resource):
         file_name = resource
         if resource == "/":
             file_name="/index.php"
 
         try:
-            path = "../php"+file_name
+
+            path = "/var/www/html/webserver/php"+file_name
+            print(path)
             if os.path.isfile(path):
-                print(path)
-                page = subprocess.check_output("sudo php-cgi -q " +  path,shell=True)
+                # print(path)
+                command = "export REQUEST_METHOD='%s'; " %(req.get_method())
+                command += "export QUERY_STRING='%s'; " %(str(req.get_params()))
+                command += "export SCRIPT_FILENAME='%s'; " % (path)
+                command += " sudo php-cgi -f '%s'" % (path)
+
+                page = subprocess.check_output(command,shell=True)
                 res = httpresponse.ok()
                 res.set_body(page.decode())
             else:
                 res = httpresponse.notfound()
                 res = get_static_page(res, "/not_found.html")
-        except:
+        except Exception as e:
+                print(e)
                 res = httpresponse.internal_server_error()
                 res = get_static_page(res, "/server_error.html")
         return res
@@ -48,14 +56,34 @@ def handle_client(connection , recvd_req , config):
         disabled_methods = config.get('SERVER','DISABLED_METHODS').split(',')
 
         req_method = http_obj.get_method()
+        print("--------------")
+        print(req_method)
         if req_method in disabled_methods:
             res = httpresponse.methodnotallowed()
-
+        # elif req_method == "PUT":
+        elif req_method == "HEAD":
+            res = httpresponse.ok()
+            res.set_header("HOST","localhost:8080")
+            res.set_body("Head request made")
+        elif req_method == "CONNECT":
+            res = httpresponse.ok()
+            res.set_header("HOST","localhost:8080")
+            res.set_body("Connect request made")
+        elif req_method == "PUT":
+            res = httpresponse.ok()
+            res.set_header("HOST","localhost:8080")
+            res.set_body("PUT request made")
+        elif req_method == "DELETE":
+            res = httpresponse.ok()
+            res.set_header("HOST","localhost:8080")
+            res.set_body("DELETE request made")
         elif req_method == "GET":
-            resource = http_obj.get_uri()
+            resource = http_obj.get_resource()
+            print("*******************************************8")
+            print(resource)
 
             if resource == "/" or resource.split(".")[-1] == "php":
-                res = serve_script(resource)
+                res = serve_script(http_obj, resource)
             elif resource.split(".")[-1] == "css" or resource.split(".")[-1] == "js" or resource.split(".")[-1] == "html":
                 res = serve_static(resource)
             else:
@@ -71,28 +99,22 @@ def handle_client(connection , recvd_req , config):
             # php -B "\$_POST = array('username' => 'val1', 'password' => 'val2');" -F checklogin.php
 
             if resource == "/" or resource.split(".")[-1] == "php":
-                # try:
-
-                command = "export GATEWAY_INTERFACE=CGI/1.1"
-                command += " export REQUEST_METHOD=POST"
-                command += " export SCRIPT_FILENAME=/var/www/html/webserver/php/checklogin.php"
-                command += " export CONTENT_LENGTH=12"
-                # command += "export REDIRECT_STATUS=true; "
-                command += " export BODY=\"username=bob\""
-                # command += "export CONTENT_TYPE=application/x-www-form-urlencoded; "
-                command += " | sudo php-cgi -q -f"
-                res = subprocess.check_output(command,shell=True)
-                print("----------------------")
-                print(res)
-                print("-----------------------")
-                    # path = "../php"+resource
-                    # read_php = open(path , "r")
-                    # command = "\"\$_POST = array('username' => 'val1', 'password' => 'val2');\""
-                    # res = subprocess.check_output("php -B " + command + " -F ../php/checklogin.php",shell=True)
-                # except subprocess.CalledProcessError as e:
-                    # raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-                    # res = httpresponse.ok()
-                    # res.set_body(page.decode())
+                try:
+                    command = " export REQUEST_METHOD=POST;"
+                    command += " export SCRIPT_FILENAME='%s%s';" %('/var/www/html/webserver/php',resource)
+                    command += " export CONTENT_LENGTH=%s;"%(str(len(str(http_obj.body))))
+                    command += "export REDIRECT_STATUS=true;"
+                    command += "export CONTENT_TYPE='application/x-www-form-urlencoded'; "
+                    command += " export BODY=\"%s\";"%(str(http_obj.body))
+                    command += "exec echo $BODY"
+                    command += " | php-cgi -q"
+                    page = subprocess.getoutput(command)
+                    res = httpresponse.ok()
+                    res.set_body(page)
+                except subprocess.CalledProcessError as e:
+                    raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+                    res = httpresponse.ok()
+                    res.set_body(page.decode())
                 # except Exception as e:
                     # print(e)
 

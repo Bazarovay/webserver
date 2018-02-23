@@ -19,7 +19,7 @@ class HttpParser():
             self.body = req_array[1]
         else:
             self.body = ""
-            
+
         self.request_line_array = req.split('\n')
         self.request_line = self.request_line_array[0]
         self.set_headers()
@@ -46,6 +46,12 @@ class HttpParser():
         return uri
 
     def get_params(self):
+        if len(self.get_uri().split("?")) > 1:
+            return self.get_uri().split("?")[1]
+        else:
+            return ""
+
+    def get_params_dic(self):
         try:
             params = {}
             parameters = self.get_uri().split("?")[1]
@@ -59,7 +65,7 @@ class HttpParser():
         return params
 
     def get_resource(self):
-        return self.get_uri.split("?")[0]
+        return self.get_uri().split("?")[0]
 
     def set_headers(self):
         self.headers = {}

@@ -80,7 +80,7 @@ class HttpResponse():
         http_string += CRLF
 
         if self.body:
-            http_string += self.body
+            http_string += str(self.body)
 
         return str(http_string)
 

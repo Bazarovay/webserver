@@ -1,5 +1,6 @@
 <?php
 include $argv[1];
+// var_dump($_POST)
 $server = "localhost";
 $user = "root";
 $pass = "changeme";
