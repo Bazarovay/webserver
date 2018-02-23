@@ -25,20 +25,20 @@ def serve_static(resource):
 def serve_script(req, resource):
         file_name = resource
         if resource == "/":
-            file_name="/app/views/pages/about.html"
+            file_name="/test.js"
 
         try:
 
-            path = "/var/www/html/webserver/ruby"+file_name
+            path = "/var/www/html/webserver/node"+file_name
             print(path)
             if os.path.isfile(path):
                 # print(path)
-                command = "export REQUEST_METHOD='%s'; " %(req.get_method())
-                command += "export QUERY_STRING='%s'; " %(str(req.get_params()))
-                command += "export SCRIPT_FILENAME='%s'; " % (path)
-                command += " sudo php-cgi -f '%s'" % (path)
+                # command = "export REQUEST_METHOD='%s'; " %(req.get_method())
+                # command += "export QUERY_STRING='%s'; " %(str(req.get_params()))
+                # command += "export SCRIPT_FILENAME='%s'; " % (path)
+                # command += " sudo php-cgi -f '%s'" % (path)
 
-                page = subprocess.check_output(command,shell=True)
+                page = subprocess.check_output("node %s"%(str(path)),shell=True)
                 res = httpresponse.ok()
                 res.set_body(page.decode())
             else:

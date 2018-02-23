@@ -5,9 +5,11 @@ author: Rafid, Hans, Adam
 description: This code handles http requests
 """
 from httpparser import *
+from httprequest import *
 import subprocess
 import httpresponse
 import os
+import socket
 
 class Handler():
 
@@ -58,25 +60,51 @@ def handle_client(connection , recvd_req , config):
         req_method = http_obj.get_method()
         print("--------------")
         print(req_method)
+        doc_root = "/var/www/html/webserver/php"
+        resource = http_obj.get_resource()
         if req_method in disabled_methods:
+
             res = httpresponse.methodnotallowed()
         # elif req_method == "PUT":
+
+
+
         elif req_method == "HEAD":
             res = httpresponse.ok()
             res.set_header("HOST","localhost:8080")
             res.set_body("Head request made")
         elif req_method == "CONNECT":
+            res = HttpRequest(method="GET",uri="www.facebook.com");
+            sending = res.send()
+            print(sending)
+            print(repr(sending))
+            ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            addr = ('www.facebook.com',80)
+            ss.connect(addr)
+            ss.send(sending.encode())
+            resp = ss.recv(1000)
+            ss.close()
+            print(resp)
             res = httpresponse.ok()
             res.set_header("HOST","localhost:8080")
-            res.set_body("Connect request made")
+            res.set_body(str(resp))
         elif req_method == "PUT":
+            print("***************************8PUT")
+            with open(doc_root+resource,'w') as myFile:
+                response = "HTTP/1.1 200 OK\r\n"
+                myFile.write(str(http_obj))
+
             res = httpresponse.ok()
             res.set_header("HOST","localhost:8080")
             res.set_body("PUT request made")
+
         elif req_method == "DELETE":
+            response = "HTTP/1.1 200 OK\r\n"
+            os.remove(doc_root+resource)
             res = httpresponse.ok()
             res.set_header("HOST","localhost:8080")
             res.set_body("DELETE request made")
+
         elif req_method == "GET":
             resource = http_obj.get_resource()
             print("*******************************************8")

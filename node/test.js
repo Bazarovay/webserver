@@ -1,5 +1,2 @@
-app.get('/', function(req, res) {
-  var name = 'hello';
-            res.render("test.html", {name:name});
-
-        });
+var our_file = "<html> <style> body { background-color: lightblue; } #header { background: #ff7f7f; height: 20%; } h1{ background: orange; margin-top:10px; margin-left: 35%; margin-right: 30%; } .button { background-color: orange; border: none; color: white; padding: 15px 32px; font-size: 16px; text-align: center; text-decoration: none; display: inline-block; } .button:hover { background-color: red; color: white; } </style><body> <h1> THIS IS OUR VULNERABLE NODE APP </h1> </body> </html>";
+console.log(our_file)

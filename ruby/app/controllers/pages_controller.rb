@@ -1,3 +1,3 @@
 def show
-  render template: "products/show"
+  render template: "about/show"
 end
