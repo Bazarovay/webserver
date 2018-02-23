@@ -10,6 +10,7 @@ import configparser
 import sys
 import threading
 from handler import *
+import ruby_handler
 
 def read_config():
     """
@@ -56,7 +57,11 @@ def read_requests(socket, config):
         print("[*] Connection accepted from %s:%d" %(address[0],address[1]))
         recvd_req = client.recv(2048)
         print(recvd_req)
-        client_handler = threading.Thread(target=handle_client, args=(client,recvd_req,config))
+        if int(config.get('SERVER','PORT')) == 8081:
+            print("RUBY SERVE")
+            client_handler = threading.Thread(target=ruby_handler.handle_client, args=(client,recvd_req,config))
+        else:
+            client_handler = threading.Thread(target=handle_client, args=(client,recvd_req,config))
         client_handler.start()
 
 def main():
