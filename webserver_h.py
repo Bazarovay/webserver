@@ -19,29 +19,30 @@ http_bash_map=[["Host","HTTP_HOST"],["Content-Type","CONTENT_TYPE"],["Content-Le
 #gets the requested file
 def getFile(http_req):
 	
-	splitreq = http_req.split("\n")
-	return splitreq[0].split(" ")[1]
+	splitreq = http_req.decode().split('\n')
+	return splitreq[0].split(' ')[1]
 
 #Gets the requested method
 def getMethod(http_req):
-	splitreq = http_req.split("\n")
-	return splitreq[0].split(" ")[0]
+	print(http_req)
+	splitreq = http_req.decode().split('\n')
+	return splitreq[0].split(' ')[0]
 
 #gets the HTTP Version
 def getHTTPVersion(http_req):
-	splitreq = http_req.split("\n")
-	return splitreq[0].split(" ")[2]
+	splitreq = http_req.decode().split('\n')
+	return splitreq[0].split(' ')[2]
 
 def getUser(http_req):
-	splitreq= http_req.split("\r\n\r\n")
+	splitreq= http_req.decode().split("\r\n\r\n")
 	return splitreq[1]
 
 def getHeaders(http_req):
 	exportList = ""
-	splitreq = http_req.split("\n")
+	splitreq = http_req.decode().split('\n')
 	headernum = 1
-	while (splitreq[headernum] != "\r"):
-		headerparts = splitreq[headernum].split(":")
+	while (splitreq[headernum] != '\r'):
+		headerparts = splitreq[headernum].split(':')
 		for map in http_bash_map:
 			if map[0] == headerparts[0]:
 				exportList +="export %s='%s';" % (map[1],headerparts[1][1:].strip('\r'))
@@ -67,24 +68,27 @@ def requestHandler(clientSock):
 	uriparts = getVars(getFile(request))
 	elist = getHeaders(request)
 
-	#if not (os.path.exists(getFile(request))):
-	#	response = "HTTP/1.1 404 HTTP Version not supported"
-	#	footer = "\r\n\r\n"
-	#	clientSock.send(response+footer)
-	#	clientSock.close()
+#	if not (os.path.isfile(getFile(request))):
+#		response = "HTTP/1.1 404 HTTP Version not supported"
+#		footer = "\r\n\r\n"
+#		with open(bad_requests, 'a') as myFile:
+#			myFile.write(str(request))
+#		clientSock.send(response+footer)
+#		clientSock.close()
 		
 		
 	#print("--",version,"--")
 
-	#version = version.strip("\r")
+#	version = version.strip("\r")
 	#print("--",version,"--")
 	#send back error 505 if version is not 1.1 or 1.2
-	#if ((version != "HTTP/1.0") or (version != "HTTP/1.1") or (version != "HTTP/1.2")):
-	#if (version != "HTTP/1.0") and (version !="HTTP/1.1") and (version !="HTTP/1.2"):
-	#	response = "HTTP/1.1 505 HTTP Version not supported"
-	#	footer = "\r\n\r\n"
-	#	clientSock.send(response+footer)
-	#	clientSock.close()
+#	if (version != "HTTP/1.0") and (version !="HTTP/1.1") and (version !="HTTP/1.2"):
+#		response = "HTTP/1.1 505 HTTP Version not supported"
+#		footer = "\r\n\r\n"
+#		with open(bad_requests, 'a') as myFile:
+#			myFile.write(str(request))
+#		clientSock.send(response+footer)
+#		clientSock.close()
 	#else:
 
 	
@@ -103,15 +107,22 @@ def requestHandler(clientSock):
 	if (method == "POST"):
 		runscript = runscript + "export BODY='%s';" % (getUser(request))
 		runscript = runscript + "export SCRIPT_FILENAME='%s%s'; " % (doc_root,uriparts[0])
-		runscript = runscript + "echo $BODY | php-cgi "
+		runscript = runscript + "echo $BODY | php-cgi -q"
 #	runscript = runscript + "export SCRIPT_FILENAME='%s%s'; " % (doc_root,uriparts[0])
 #	runscript = runscript + " php-cgi -f %s%s" % (doc_root,uriparts[0])
 	print("-",runscript,"-")	
 	response = "HTTP/1.1 200 Ok\r\n"
-	body = subprocess.check_output(runscript, shell=True)
+	#body = subprocess.check_output(runscript, shell=True)
+	body = subprocess.getoutput(runscript)
+	print(type(body))
+	#print("BODY",str(body))
 	footer = "\r\n\r\n"
+	with open(requests, 'a') as myFile:
+		myFile.write(str(request))
 	full = response + body + footer
-	clientSock.send(full)
+	#print("-",full,"-")
+	#print("-",full.encode(),"-")
+	clientSock.send(full.encode())
 	clientSock.close()
 
 #define a function called main
